@@ -2,11 +2,14 @@ package com.jafrinventarios.api.service.usuarios;
 
 import com.jafrinventarios.api.entity.usuarios.Rol;
 import com.jafrinventarios.api.entity.usuarios.Usuario;
+import com.jafrinventarios.api.exception.ExcepcionValidacionBD;
 import com.jafrinventarios.api.repository.usuarios.RolRepository;
 import com.jafrinventarios.api.repository.usuarios.UsuarioRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 
 /**
  * Servicio encargado de gestionar la lógica de negocio y las operaciones
@@ -42,10 +45,7 @@ public class UsuarioService {
      */
     public Usuario registrarNuevoUsuario(Usuario nuevoUsuario, Integer idRolEsperado) throws Exception {
 
-        // Verifica la disponibilidad del correo electrónico en los registros existentes.
-        if (usuarioRepository.existsByCorreoUsuario(nuevoUsuario.getCorreoUsuario())) {
-            throw new Exception("El correo electrónico ingresado ya se encuentra registrado en el sistema.");
-        }
+        validarDatosUnicosUsuario(nuevoUsuario);
 
         // Consulta el rol especificado; interrumpe el flujo si el identificador no es válido.
         Rol rol = rolRepository.findById(idRolEsperado)
@@ -60,4 +60,23 @@ public class UsuarioService {
         // Retorna el objeto guardado exitosamente.
         return usuarioRepository.save(nuevoUsuario);
     }
+
+
+    private void validarDatosUnicosUsuario(Usuario usuario) throws ExcepcionValidacionBD{
+
+        HashMap<String, String> errores = new HashMap<>();
+
+        if(usuarioRepository.existsByAliasUsuario(usuario.getAliasUsuario()))
+            errores.put("alias", "Este alias ya esta en uso");
+
+        if(usuarioRepository.existsByCorreoUsuario(usuario.getCorreoUsuario()))
+            errores.put("correo", "Este correo ya esta registrado");
+
+        if(usuarioRepository.existsByTelefonoUsuario(usuario.getTelefonoUsuario()))
+            errores.put("telefono", "Este telefono ya esta registrado");
+
+        if(!errores.isEmpty())
+            throw new ExcepcionValidacionBD(errores);
+    }
+
 }
