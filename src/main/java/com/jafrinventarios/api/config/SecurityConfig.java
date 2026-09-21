@@ -16,6 +16,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // Autoriza esta ruta específica para que cualquiera pueda registrarse
                         .requestMatchers("/api/usuarios/registro").permitAll()
+                        // Autoriza esta ruta específica para que cualquiera pueda iniciar sesion
+                        .requestMatchers("/api/auth/login").permitAll()
                         // Exige autenticación para cualquier otra ruta futura
                         .anyRequest().authenticated()
                 );
