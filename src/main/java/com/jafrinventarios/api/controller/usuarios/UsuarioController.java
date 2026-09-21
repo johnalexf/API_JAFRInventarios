@@ -1,10 +1,14 @@
 package com.jafrinventarios.api.controller.usuarios;
 
 import com.jafrinventarios.api.entity.usuarios.Usuario;
+import com.jafrinventarios.api.exception.ExcepcionValidacionBD;
 import com.jafrinventarios.api.service.usuarios.UsuarioService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Controlador REST encargado de exponer los endpoints relacionados con la
@@ -44,8 +48,16 @@ public class UsuarioController {
             // Delega la lógica de validación e inserción a la capa de servicio
             Usuario nuevoUsuario = usuarioService.registrarNuevoUsuario(usuario, idRol);
 
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("mensaje", "Usuario creado correctamente");
+            respuesta.put("usuario", nuevoUsuario);
+
             // Si tiene éxito, devuelve el objeto JSON y el código de estado 201 (Created)
-            return new ResponseEntity<>(nuevoUsuario, HttpStatus.CREATED);
+            return new ResponseEntity<>(respuesta, HttpStatus.CREATED);
+        } catch (ExcepcionValidacionBD e) {
+            // Se retorna el Map de la excepción directamente
+            // Spring lo convierte a JSON: {"correo": "ya existe", "alias": "en uso"}
+            return new ResponseEntity<>(e.getErrores(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             // Si el servicio lanza una excepción (ej: correo duplicado), se captura
             // y se devuelve el mensaje de error con un código 400 (Bad Request)
