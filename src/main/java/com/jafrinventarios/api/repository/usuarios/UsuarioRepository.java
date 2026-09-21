@@ -14,4 +14,10 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     // Funciona igual para comprobar si existe un registro y devuelve un boolean
     boolean existsByCorreoUsuario(String correoUsuario);
+
+    //Funcion para combrobar si existe un usuario con el telefono a buscar
+    boolean existsByTelefonoUsuario(String telefonoUsuario);
+
+    //Funcion para combrobar si existe un usuario con el alias a buscar
+    boolean existsByAliasUsuario(String aliasUsuario);
 }
