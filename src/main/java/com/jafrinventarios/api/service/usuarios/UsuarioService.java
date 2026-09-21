@@ -28,10 +28,10 @@ public class UsuarioService {
      * @param usuarioRepository Repositorio para operaciones de base de datos de usuarios.
      * @param rolRepository Repositorio para operaciones de base de datos de roles.
      */
-    public UsuarioService(UsuarioRepository usuarioRepository, RolRepository rolRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, RolRepository rolRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.rolRepository = rolRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
