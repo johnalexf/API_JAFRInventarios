@@ -1,5 +1,6 @@
 package com.jafrinventarios.api.entity.usuarios;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -32,6 +33,7 @@ public class Usuario {
     @Column(name = "segundo_apellido_usuario", length = 30)
     private String segundoApellidoUsuario;
 
+    @JsonIgnore
     @Column(name = "contrasena_usuario", nullable = false, length = 100)
     private String contrasenaUsuario;
 
