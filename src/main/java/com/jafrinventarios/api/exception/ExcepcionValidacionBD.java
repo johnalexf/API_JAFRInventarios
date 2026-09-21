@@ -19,8 +19,11 @@ public class ExcepcionValidacionBD extends Exception {
         this.errores = errores;
     }
 
-    public HashMap<String, String> getErrores() {
-        return errores;
+    public Map<String, Object> getErrores() {
+        Map<String, Object> respuestaError = new HashMap<>();
+        respuestaError.put("mensaje", this.getMessage());
+        respuestaError.put("detalles", this.errores);
+        return respuestaError;
     }
 
     public String getErroresEnString(){
