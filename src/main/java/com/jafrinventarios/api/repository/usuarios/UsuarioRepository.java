@@ -12,6 +12,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     // automáticamente con solo leer el nombre de este método en cammelCase.
     Optional<Usuario> findByCorreoUsuario(String correoUsuario);
 
+    Optional<Usuario> findByAliasUsuario(String aliasUsuario);
+
     // Funciona igual para comprobar si existe un registro y devuelve un boolean
     boolean existsByCorreoUsuario(String correoUsuario);
 

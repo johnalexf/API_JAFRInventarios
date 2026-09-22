@@ -23,10 +23,10 @@ public class AuthController {
     public ResponseEntity<?> iniciarSesion(@RequestBody Map<String, String> credenciales) {
         try {
             // Extraemos los datos del JSON que envía Postman
-            String correo = credenciales.get("correo");
+            String credencial = credenciales.get("usuario");
             String contrasenaPlana = credenciales.get("contrasena");
 
-            Usuario usuario = authService.autenticarUsuario(correo, contrasenaPlana);
+            Usuario usuario = authService.autenticarUsuario(credencial, contrasenaPlana);
 
             Map<String, Object> respuesta = new HashMap<>();
             respuesta.put("mensaje", "Autenticacion satisfactoria, bienvenido " + usuario.getAliasUsuario());

@@ -18,12 +18,18 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public Usuario autenticarUsuario(String correo, String contrasenaPlana) throws Exception {
+    public Usuario autenticarUsuario(String credencial, String contrasenaPlana) throws Exception {
 
-        Optional<Usuario> usuario = usuarioRepository.findByCorreoUsuario( correo );
+        Optional<Usuario> usuario;
 
-        if(usuario.isEmpty())
-            throw new Exception("Credenciales invalidas");
+        usuario = usuarioRepository.findByCorreoUsuario( credencial );
+
+        if(usuario.isEmpty()) {
+            usuario = usuarioRepository.findByAliasUsuario( credencial );
+            if (usuario.isEmpty())
+                throw new Exception("Credenciales invalidas");
+
+        }
 
         if( !passwordEncoder.matches( contrasenaPlana, usuario.get().getContrasenaUsuario() ) )
             throw new Exception("Credenciales invalidas");
